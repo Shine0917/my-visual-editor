@@ -1,39 +1,58 @@
 /*
  * @Author: xiaozhaoxia
  * @Date: 2021-08-31 15:28:56
- * @LastEditTime: 2021-08-31 16:19:35
+ * @LastEditTime: 2021-08-31 21:22:53
  * @LastEditors: xiaozhaoxiz
- * @FilePath: /My-Visual-editor/src/packages/ReactVisualEditor.util.tsx
+ * @FilePath: /my-visual-editor/src/packages/ReactVisualEditor.util.tsx
  */
 
 export interface ReactVisualEditorBlock {
-  componentKey: string,
-  top:number,
-  left:number,
+  componentKey: string
+  top: number
+  left: number
 }
 
 export interface ReactVisualEditorValue {
   container: {
-    height: number,
-    width: number,
-  },
+    height: number
+    width: number
+  }
   blocks: ReactVisualEditorBlock[]
 }
 
 export interface ReactVisualEditorComponent {
-  key: string,
-  name: string,
-  preview: () => JSX.Element,
-  render: () => JSX.Element,
+  key: string
+  name: string
+  preview: () => JSX.Element
+  render: () => JSX.Element
 }
 
-export function createVisualConfig() {
-  const componentMap: {[k: string]: ReactVisualEditorComponent} ={}
+export function createVisualBlock ({
+  top,
+  left,
+  component
+}: {
+  top: number
+  left: number
+  component: ReactVisualEditorComponent
+}): ReactVisualEditorBlock {
+  return {
+    componentKey: component.key,
+    top,
+    left
+  }
+}
 
-  const componentArray: ReactVisualEditorComponent[]=[]
+export function createVisualConfig () {
+  const componentMap: { [k: string]: ReactVisualEditorComponent } = {}
 
-  function registerComponent(key:string, option:Omit<ReactVisualEditorComponent,'key'>) {
-    if(componentMap[key]) {
+  const componentArray: ReactVisualEditorComponent[] = []
+
+  function registerComponent (
+    key: string,
+    option: Omit<ReactVisualEditorComponent, 'key'>
+  ) {
+    if (componentMap[key]) {
       const index = componentArray.indexOf(componentMap[key])
       componentArray.splice(index, 1)
     }
@@ -49,9 +68,8 @@ export function createVisualConfig() {
   return {
     componentMap,
     componentArray,
-    registerComponent,
+    registerComponent
   }
 }
-
 
 export type ReactVisualEditorConfig = ReturnType<typeof createVisualConfig>
