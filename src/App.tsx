@@ -2,11 +2,22 @@ import './app.scss'
 import {useState, useRef,useCallback,useMemo} from 'react'
 import {useCallbackRef} from './packages/hook/useCallbackRef'
 import { ReactVisualEditor } from './packages/ReactVisualEditor'
+import {visualConfig} from './visual.config'
+import {ReactVisualEditorValue} from './packages/ReactVisualEditor.util'
 const App =() => {
   const [pos, setPos] = useState({
     left:0,
     top:0
   })
+
+  const [editorValue, setEditorValue] = useState({
+    container: {
+      height:700,
+      width:1000,
+    },
+    blocks:[]
+  } as ReactVisualEditorValue
+  )
 
   const posRef = useRef(pos)
   posRef.current = pos
@@ -67,7 +78,11 @@ const App =() => {
         }}
         onMouseDown={mouseDragger.mousedown}
         ></div> */}
-        <ReactVisualEditor></ReactVisualEditor>
+        <ReactVisualEditor
+          config={visualConfig}
+          value={editorValue}
+          onChange={setEditorValue}
+        ></ReactVisualEditor>
     </div>
 )
 }
