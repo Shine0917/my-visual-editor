@@ -15,6 +15,7 @@ $primary: #409EFF; // 基础色
   left: 20px;
   bottom: 20px;
   right: 20px;
+  overflow: hidden;
 
   &:before {
     position: fixed;
@@ -102,6 +103,32 @@ $primary: #409EFF; // 基础色
       padding-top: $headSize;
       padding-bottom: 300px;
       background-color: #f6f6f6;
+      overflow: auto;
+      display: flex;
+      justify-content: center;
+
+      .react-visual-editor-container {
+        background-color: white;
+
+        .react-visual-editor-block {
+          &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+          }
+        }
+      }
     }
+  }
+}
+
+.react-visual-editor-container {
+  position: relative;
+
+  .react-visual-editor-block {
+    position: absolute;
   }
 }
