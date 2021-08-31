@@ -1,6 +1,7 @@
 import './app.scss'
 import {useState, useRef,useCallback,useMemo} from 'react'
 import {useCallbackRef} from './packages/hook/useCallbackRef'
+import { ReactVisualEditor } from './packages/ReactVisualEditor'
 const App =() => {
   const [pos, setPos] = useState({
     left:0,
@@ -54,7 +55,7 @@ const App =() => {
   })()
   return (
     <div className="app-home">
-        <h1 className="test">hello world</h1>
+        {/* <h1 className="test">hello world</h1>
         <div style={{
           height: '50px',
           width: '50px',
@@ -65,7 +66,8 @@ const App =() => {
           display: 'inline-block'
         }}
         onMouseDown={mouseDragger.mousedown}
-        ></div>
+        ></div> */}
+        <ReactVisualEditor></ReactVisualEditor>
     </div>
 )
 }
