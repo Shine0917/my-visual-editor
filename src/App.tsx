@@ -1,5 +1,6 @@
 import './app.scss'
 import {useState, useRef,useCallback,useMemo} from 'react'
+import {useCallbackRef} from './packages/hook/useCallbackRef'
 const App =() => {
   const [pos, setPos] = useState({
     left:0,
@@ -29,7 +30,7 @@ const App =() => {
     }
 
    
-    const mousemove = (e:MouseEvent) => {
+    const mousemove = useCallbackRef((e:MouseEvent) => {
       /*在move的过程中，需要获取一些hook变量*/
       console.log({pos:`${pos.top}_${pos.left}`,ref:`${posRef.current.top}_${posRef.current.left}`})
 
@@ -40,7 +41,7 @@ const App =() => {
         top:startTop + durY,
         left:startLeft + durX,
       })
-    }
+    })
     const mouseup = (e:MouseEvent) => {
       document.removeEventListener('mousemove',mousemove)
       document.removeEventListener('mouseup',mouseup)
