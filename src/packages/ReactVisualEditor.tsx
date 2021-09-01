@@ -1,13 +1,13 @@
 /*
  * @Author: xiaozhaoxia
  * @Date: 2021-08-31 15:04:17
- * @LastEditTime: 2021-09-01 15:37:09
+ * @LastEditTime: 2021-09-01 15:50:37
  * @LastEditors: xiaozhaoxiz
  * @FilePath: /My-Visual-editor/src/packages/ReactVisualEditor.tsx
  */
 
 import './ReactVisualEditor.scss'
-import { FC, useMemo, useRef } from 'react'
+import { FC, useMemo, useRef,useState } from 'react'
 import {
   ReactVisualEditorConfig,
   ReactVisualEditorValue,
@@ -25,6 +25,8 @@ export interface IProps {
 }
 export const ReactVisualEditor: FC = (props: IProps) => {
   console.log('props :>> ', props)
+  const [preview, setPreview] = useState(false)
+  const [editing, setEditing] = useState(false)
   const containerRef = useRef({} as HTMLDivElement)
   const containerStyle = useMemo(() => {
     return {
@@ -191,6 +193,73 @@ export const ReactVisualEditor: FC = (props: IProps) => {
     return {mousedown}
   })()
 
+  const buttons:{
+    label:string | (() => string),
+    icon: string | (() => string),
+    tip?: string | (() => string),
+    handler: () => void,
+  }[] =[
+    {
+      label: '撤销', icon: 'icon-back', handler: () => {
+          // commander.undo
+      }, tip: 'ctrl+z'
+  },
+  {
+      label: '重做', icon: 'icon-forward', handler: () => {
+          // commander.redo
+      }, tip: 'ctrl+y, ctrl+shift+z'
+  },
+  {
+      label: () => preview ? '编辑' : '预览',
+      icon: () => preview ? 'icon-edit' : 'icon-browse',
+      handler: () => {
+          if (!preview) {
+              methods.clearFocus()
+          }
+          setPreview(!preview)
+      },
+  },
+  {
+      label: '导入', icon: 'icon-import', handler: async () => {
+          /*const text = await $$dialog.textarea('', {title: '请输入导入的JSON字符串'})
+          try {
+              const data = JSON.parse(text || '')
+              commander.updateValue(data)
+          } catch (e) {
+              console.error(e)
+              notification.open({
+                  message: '导入失败！',
+                  description: '导入的数据格式不正常，请检查！'
+              })
+          }*/
+      }
+  },
+  {
+      label: '导出',
+      icon: 'icon-export',
+      handler: () => {
+          // $$dialog.textarea(JSON.stringify(props.value), {editReadonly: true, title: '导出的JSON数据'})
+      }
+  },
+  /*{label: '置顶', icon: 'icon-place-top', handler: () => commander.placeTop(), tip: 'ctrl+up'},
+  {label: '置底', icon: 'icon-place-bottom', handler: () => commander.placeBottom(), tip: 'ctrl+down'},*/
+  {
+      label: '删除', icon: 'icon-delete', handler: () => {
+          // commander.delete()
+      }, tip: 'ctrl+d, backspace, delete'
+  },
+  {
+      label: '清空', icon: 'icon-reset', handler: () => {
+          // commander.clear()
+      },
+  },
+  {
+      label: '关闭', icon: 'icon-close', handler: () => {
+          methods.clearFocus()
+          setEditing(false)
+      },
+  },  ]
+
   return (
     <div className='react-visual-editor'>
       <div className='react-visual-editor-menu'>
@@ -209,7 +278,18 @@ export const ReactVisualEditor: FC = (props: IProps) => {
           </div>
         ))}
       </div>
-      <div className='react-visual-editor-head'>head</div>
+      <div className='react-visual-editor-head'>
+        {buttons.map((btn, index) => {
+          const label = typeof btn.label === 'function' ? btn.label() : btn.label
+          const icon = typeof btn.icon === 'function' ? btn.icon(): btn.icon
+          return (
+            <div className='react-visual-editor-header-btn' key={index}>
+              <i className={`iconfont ${icon}`}></i>
+              <span>{label}</span>
+            </div>
+          )
+        })}
+        </div>
       <div className='react-visual-editor-operator'>operator</div>
       <div className='react-visual-editor-body'>
         <div
