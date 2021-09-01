@@ -1,9 +1,9 @@
 /*
  * @Author: xiaozhaoxia
  * @Date: 2021-08-31 17:35:26
- * @LastEditTime: 2021-09-01 07:22:52
+ * @LastEditTime: 2021-09-01 13:51:39
  * @LastEditors: xiaozhaoxiz
- * @FilePath: /my-visual-editor/src/packages/ReactEditorBlock.tsx
+ * @FilePath: /My-Visual-editor/src/packages/ReactEditorBlock.tsx
  */
 import { useEffect, useMemo, useRef } from 'react'
 import {
@@ -11,10 +11,12 @@ import {
   ReactVisualEditorConfig
 } from './ReactVisualEditor.util'
 import { useUpdate } from './hook/useUpdate'
+import classNames from 'classnames'
 
 export const ReactVisualBlock: React.FC<{
   block: ReactVisualEditorBlock
-  config: ReactVisualEditorConfig
+  config: ReactVisualEditorConfig,
+  onMouseDown: (event: React.MouseEvent<HTMLDivElement>) => void
 }> = props => {
   const elRef = useRef({} as HTMLDivElement)
   const { forceUpdate } = useUpdate()
@@ -25,6 +27,12 @@ export const ReactVisualBlock: React.FC<{
       opacity: props.block.adjustPosition ? '0' : ''
     }
   }, [props.block.top, props.block.left, props.block.adjustPosition])
+
+  const classes = useMemo(() => 
+    classNames(['react-visual-editor-block',{
+      'react-visual-editor-block-focus': props.block.focus,
+    }])
+  ,[props.block.focus])
   const component = props.config.componentMap[props.block.componentKey]
   let render: any
   if (!!component) {
@@ -43,7 +51,7 @@ export const ReactVisualBlock: React.FC<{
   }, [])
 
   return (
-    <div className='react-visual-editor-block' style={style} ref={elRef}>
+    <div className={classes} style={style} ref={elRef} onMouseDown={props.onMouseDown}>
       {render}
     </div>
   )

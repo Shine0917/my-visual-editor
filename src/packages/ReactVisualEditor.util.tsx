@@ -1,16 +1,17 @@
 /*
  * @Author: xiaozhaoxia
  * @Date: 2021-08-31 15:28:56
- * @LastEditTime: 2021-08-31 21:46:05
+ * @LastEditTime: 2021-09-01 10:53:57
  * @LastEditors: xiaozhaoxiz
- * @FilePath: /my-visual-editor/src/packages/ReactVisualEditor.util.tsx
+ * @FilePath: /My-Visual-editor/src/packages/ReactVisualEditor.util.tsx
  */
 
 export interface ReactVisualEditorBlock {
   componentKey: string
   top: number
   left: number
-  adjustPosition: boolean
+  adjustPosition: boolean,
+  focus:boolean
 }
 
 export interface ReactVisualEditorValue {
@@ -41,7 +42,8 @@ export function createVisualBlock ({
     componentKey: component.key,
     top,
     left,
-    adjustPosition: true
+    adjustPosition: true,
+    focus:false,
   }
 }
 

@@ -119,6 +119,19 @@ $primary: #409EFF; // 基础色
             right: 0;
             bottom: 0;
           }
+
+          &.react-visual-editor-block-focus {
+            &:before {
+              content: '';
+              position: absolute;
+              $size: 4px;
+              top: -$size;
+              left: -$size;
+              right: -$size;
+              bottom: -$size;
+              border: dashed 1px $primary;
+            }
+          }
         }
       }
     }
