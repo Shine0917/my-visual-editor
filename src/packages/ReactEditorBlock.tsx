@@ -1,7 +1,7 @@
 /*
  * @Author: xiaozhaoxia
  * @Date: 2021-08-31 17:35:26
- * @LastEditTime: 2021-08-31 21:47:34
+ * @LastEditTime: 2021-09-01 07:22:52
  * @LastEditors: xiaozhaoxiz
  * @FilePath: /my-visual-editor/src/packages/ReactEditorBlock.tsx
  */
@@ -21,9 +21,10 @@ export const ReactVisualBlock: React.FC<{
   const style = useMemo(() => {
     return {
       top: `${props.block.top}px`,
-      left: `${props.block.left}px`
+      left: `${props.block.left}px`,
+      opacity: props.block.adjustPosition ? '0' : ''
     }
-  }, [props.block.top, props.block.left])
+  }, [props.block.top, props.block.left, props.block.adjustPosition])
   const component = props.config.componentMap[props.block.componentKey]
   let render: any
   if (!!component) {
