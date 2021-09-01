@@ -1,7 +1,7 @@
 /*
  * @Author: xiaozhaoxia
  * @Date: 2021-08-31 15:04:17
- * @LastEditTime: 2021-09-01 13:51:16
+ * @LastEditTime: 2021-09-01 15:37:09
  * @LastEditors: xiaozhaoxiz
  * @FilePath: /My-Visual-editor/src/packages/ReactVisualEditor.tsx
  */
@@ -136,6 +136,7 @@ export const ReactVisualEditor: FC = (props: IProps) => {
           methods.clearFocus(block)
         }
       }
+      setTimeout(() => blockDragger.mousedown(e),0)
     }
 
     const container = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -151,6 +152,43 @@ export const ReactVisualEditor: FC = (props: IProps) => {
       block,
       container,
     }
+  })()
+
+  const blockDragger =(() => {
+    const dragData = useRef({
+      startX:0,
+      startY:0,
+      startPosArray:[] as {top:number, left:number}[]
+    })
+
+    const mousedown = useCallbackRef((e:React.MouseEvent<HTMLDivElement>) => {
+      document.addEventListener("mousemove",mousemove),
+      document.addEventListener("mouseup",mouseup),
+      dragData.current ={
+        startX:e.clientX,
+        startY:e.clientY,
+        startPosArray: focusData.focus.map(({top,left}) => ({top,left}))
+      }
+    })
+
+    const mousemove = useCallbackRef((e:MouseEvent) => {
+      const {startX, startY,startPosArray} = dragData.current
+      const durX = e.clientX - startX, durY = e.clientY - startY
+      focusData.focus.forEach((block, index) => {
+        const {left, top} = startPosArray[index]
+        block.top = top + durY
+        block.left = left + durX
+        
+      })
+      methods.updateBlocks(props.value.blocks)
+    })
+
+    const mouseup = useCallbackRef((e: MouseEvent) => {
+      document.removeEventListener('mousemove',mousemove)
+      document.removeEventListener('mouseup',mouseup)
+    })
+
+    return {mousedown}
   })()
 
   return (

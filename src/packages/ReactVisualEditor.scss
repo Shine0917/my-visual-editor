@@ -111,6 +111,8 @@ $primary: #409EFF; // 基础色
         background-color: white;
 
         .react-visual-editor-block {
+          user-select: none;
+
           &:after {
             content: '';
             position: absolute;
